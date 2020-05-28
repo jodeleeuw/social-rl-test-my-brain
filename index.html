@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych/plugins/jspsych-audio-keyboard-response.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body>
+
+  </body>
+  <script>
+
+    var timeline = [];
+
+    var cue_trial = {
+      type: 'html-button-response',
+      choices: ['img/fractal-1.jpg', 'img/fractal-2.jpg'],
+      stimulus: '<p>Select a picture.</p>',
+      button_html: '<img style="width:150px; height: 100px; cursor: pointer;" src="%choice%"></img>',
+      post_trial_gap: 1000,
+      data: {
+        rewarding_choice: jsPsych.timelineVariable('rewarding_choice')
+      },
+      on_finish: function(data){
+        data.correct = data.button_pressed == data.rewarding_choice;
+      }
+    }
+
+    var feedback_trial = {
+      type: 'audio-keyboard-response',
+      stimulus: function(){
+        if(jsPsych.data.get().last(1).values()[0].correct){
+          return "mp3/cheer.mp3";
+        } else {
+          return "mp3/boo.mp3";
+        }
+      },
+      prompt: function(){
+        if(jsPsych.data.get().last(1).values()[0].correct){
+          return "<img src='img/thumbs_up.png'></img>";
+        } else {
+          return "<img src='img/thumbs_down.png'></img>";
+        }
+      },
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 1500,
+      post_trial_gap: 1000
+    }
+
+    var block_1 = {
+      timeline: [cue_trial, feedback_trial],
+      timeline_variables: [
+        {rewarding_choice: 0},
+        {rewarding_choice: 1}
+      ],
+      sample: {
+        type: 'custom',
+        fn: function(){
+          var total_trials = 20;
+          var p_reward_0 = 0.8;
+          var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
+          return sample;
+        }
+      }
+    }
+
+    timeline.push(block_1);
+
+    jsPsych.init({
+      timeline: timeline,
+      preload_audio: ['mp3/cheer.mp3', 'mp3/boo.mp3'],
+      use_webaudio: false
+    })
+  </script>
+</html>
