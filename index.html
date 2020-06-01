@@ -41,7 +41,7 @@
 
       @media only screen and (max-width: 600px) {
         div.instructions {
-          font-size: 12px;
+          font-size: 14px;
           line-height: 1.5em;
         }
       }
@@ -54,56 +54,114 @@
 
     var timeline = [];
 
-    var instructions = {
+    /* define instructions */
+
+    var start_instructions = {
       timeline: [{
         type: 'html-button-response',
         stimulus: '<div class="instructions">'+
           '<p>You will be presented with two pictures on the screen and you have to choose one of them by clicking on it.</p>'+
-          '<p>During the task, one of the pictures will be followed by a reward (thumbs up) more often than the other one and this will change as the game goes on. You have to pick the picture that you think is giving you reward at that time and your objective is to get as many thumbs-up (rewards) and as little thumbs-down (punishments) as you can. The pictures will be on the screen only for a short while and you have to make your responses within this time.</p>',
-          choices: ['Continue']
+          '<p>One of the pictures will be followed by a reward (thumbs up) more often than the other one and this will change as the game goes on. You have to pick the picture that you think is giving you reward at that time and your objective is to get as many thumbs-up (rewards) and as little thumbs-down (punishments) as you can.</p><p>The pictures will be on the screen only for a short while and you have to make your responses within this time.</p>'+
+          '</div>',
+        choices: ['Continue']
       },
       {
         type: 'html-button-response',
         stimulus: '<div class="instructions">'+
-          '<p>At the beginning and end of each block, you will be asked to rate few affective rating questionnaires. I will show you how to do these during the practice block.</p>'+
-          '<p>I will give you a practice now with example pictures. For the practice round, there will be no associations between the pictures and the reward or punishment. The goal of the practice is to get you acquainted the type of stimuli that you will be seeing and the general format of the game.</p>',
-        choices: ['Continue']
+          '<p>First, you will complete a practice round.</p><p>For the practice round, there will be no associations between the pictures and the reward or punishment. The goal of the practice is to get you acquainted the type of stimuli that you will be seeing and the general format of the game.</p>'+
+          '</div>',
+        choices: ['Begin Practice']
       }],
       data: {task: 'instructions'}
     }
 
-    timeline.push(instructions);
+    var pre_affective_rating_instructions = {
+      type: 'html-button-response',
+      stimulus: '<div class="instructions">'+
+        '<p>Now we will ask you a set of questions about how you are feeling at the moment.</p>'+
+        '</div>',
+      choices: ['Start questions'],
+      data: {task: 'instructions'}
+    }
+
+    var pre_task_instructions = {
+      type: 'html-button-response',
+      stimulus: '<div class="instructions">'+
+        '<p>The main task will begin now.</p>'+
+        '<p>Remember, one of the pictures will be followed by a reward (thumbs up) more often than the other one and this will change as the game goes on. You have to pick the picture that you think is giving you reward at that time and your objective is to get as many thumbs-up (rewards) and as little thumbs-down (punishments) as you can.</p>'+
+        '</div>',
+      choices: ['Begin'],
+      data: {task: 'instructions'}
+    }
+
+    var pre_picture_rating_instructions = {
+      type: 'html-button-response',
+      stimulus: '<div class="instructions">'+
+        '<p>All done! Now we will ask a short set of questions about the task you just completed.</p>'+
+        '</div>',
+      choices: ['Continue'],
+      data: {task: 'instructions'}
+    }
+
+    var completed_instructions = {
+      type: 'html-button-response',
+      stimulus: '<div class="instructions">'+
+        '<p>You\'ve finished the experiment. Thanks!</p>'+
+        '</div>',
+      choices: ['Done'],
+      data: {task: 'instructions'}
+    }
+
+    /* create the affective rating scales */
 
     var affective_ratings = [
       {
         type: 'html-slider-response',
-        stimulus: '<p>How are you currently feeling?</p>',
+        stimulus: '<p>How are you feeling at the moment?</p>',
         labels: ["Hostile", "Neutral", "Friendly"],
         slider_width: 250,
         data: {question: 'Hostile-Friendly'}
       },
       {
         type: 'html-slider-response',
-        stimulus: '<p>How are you currently feeling?</p>',
+        stimulus: '<p>How are you feeling at the moment?</p>',
         labels: ["Sad", "Neutral", "Happy"],
         slider_width: 250,
         data: {question: 'Sad-Happy'}
       },
       {
         type: 'html-slider-response',
-        stimulus: '<p>How are you currently feeling?</p>',
+        stimulus: '<p>How are you feeling at the moment?</p>',
         labels: ["Tensed", "Neutral", "Relaxed"],
         slider_width: 250,
         data: {question: 'Tensed-Relaxed'}
       },
       {
         type: 'html-slider-response',
-        stimulus: '<p>How are you currently feeling?</p>',
+        stimulus: '<p>How are you feeling at the moment?</p>',
         labels: ["Withdrawn", "Neutral", "Social"],
         slider_width: 250,
         data: {question: 'Withdrawn-Social'}
       },
     ]
+
+    var ar_start = {
+      timeline: affective_ratings,
+      data: {
+        task: 'affective_ratings',
+        phase: 'start'
+      }
+    }
+
+    var ar_end = {
+      timeline: affective_ratings,
+      data: {
+        task: 'affective_ratings',
+        phase: 'end'
+      }
+    }
+
+    /* create the RL task */
 
     var fixation_trial = {
       type: 'html-keyboard-response',
@@ -115,7 +173,7 @@
     var clicked;
     var cue_trial = {
       type: 'html-button-response',
-      choices: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png'],
+      choices: jsPsych.timelineVariable('cues'),
       stimulus: '',//'<p>Select a picture.</p>',
       button_html: '<img class="cue" src="%choice%"></img>',
       post_trial_gap: 1000,
@@ -167,38 +225,47 @@
     }
 
     var practice_block = {
-      timeline: [fixation_trial, cue_trial, feedback_trial],
-      timeline_variables: [
-        {rewarding_choice: 0},
-        {rewarding_choice: 1}
+      timeline: [
+        {
+          timeline: [fixation_trial, cue_trial, feedback_trial],
+          timeline_variables: [
+            {rewarding_choice: 0, cues: ['img/pilot_1_1.png', 'img/pilot_1_2.png']},
+            {rewarding_choice: 1, cues: ['img/pilot_1_1.png', 'img/pilot_1_2.png']}
+          ],
+          data: {block: 'practice'},
+          sample: {
+            type: 'custom',
+            fn: function(){
+              var total_trials = 10;
+              var p_reward_0 = 0.5;
+              var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
+              return sample;
+            }
+          }
+        },
+        {
+          timeline: [{
+            type: 'html-button-response',
+            stimulus: '<p>You didn\'t respond on a few trials. You have to make your choice faster. Let\'s try the practice again.</p>',
+            choices: ['Start practice']
+          }],
+          conditional_function: function(){
+            var slow_trials = jsPsych.data.get().filter({block: 'practice', task: 'rl-select'}).last(10).filter({rewarded: null}).count();
+            return slow_trials >= 3;
+          }
+        }        
       ],
-      data: {block: 'practice'},
-      sample: {
-        type: 'custom',
-        fn: function(){
-          var total_trials = 10;
-          var p_reward_0 = 0.5;
-          var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
-          return sample;
-        }
+      loop_function: function(){
+        var slow_trials = jsPsych.data.get().filter({block: 'practice', task: 'rl-select'}).last(10).filter({rewarded: null}).count();
+        return slow_trials >= 3;
       }
     }
-    timeline.push(practice_block);
-
-    var ar_start = {
-      timeline: affective_ratings,
-      data: {
-        task: 'affective_ratings',
-        phase: 'start'
-      }
-    }
-    timeline.push(ar_start);
 
     var block_1 = {
       timeline: [fixation_trial, cue_trial, feedback_trial],
       timeline_variables: [
-        {rewarding_choice: 0},
-        {rewarding_choice: 1}
+        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
+        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
       ],
       data: {block: 1},
       sample: {
@@ -212,13 +279,11 @@
       }
     }
 
-    timeline.push(block_1);
-
     var block_2 = {
       timeline: [fixation_trial, cue_trial, feedback_trial],
       timeline_variables: [
-        {rewarding_choice: 0},
-        {rewarding_choice: 1}
+        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
+        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
       ],
       data: {block: 2},
       sample: {
@@ -232,13 +297,11 @@
       }
     }
 
-    //timeline.push(block_2);
-
     var block_3 = {
       timeline: [fixation_trial, cue_trial, feedback_trial],
       timeline_variables: [
-        {rewarding_choice: 0},
-        {rewarding_choice: 1}
+        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
+        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
       ],
       data: {block: 3},
       sample: {
@@ -252,13 +315,11 @@
       }
     }
 
-    //timeline.push(block_3);
-
     var block_4 = {
       timeline: [fixation_trial, cue_trial, feedback_trial],
       timeline_variables: [
-        {rewarding_choice: 0},
-        {rewarding_choice: 1}
+        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
+        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
       ],
       data: {block: 4},
       sample: {
@@ -272,7 +333,8 @@
       }
     }
 
-    //timeline.push(block_4);
+
+    /* create the picture rating tasks */
 
     var picture_select_task = {
       type: 'html-button-response',
@@ -329,7 +391,7 @@
       }
     }
 
-    timeline.push(picture_rating_procedure);
+    /* create the final survey */
 
     var post_survey = {
       timeline:[
@@ -374,20 +436,35 @@
       }
     }
 
-    timeline.push(post_survey);
+    /* build the the experiment timeline */
 
-    var ar_end = {
-      timeline: affective_ratings,
-      data: {
-        task: 'affective_ratings',
-        phase: 'end'
-      }
-    }
-    timeline.push(ar_end);
+    timeline.push(start_instructions);
+    timeline.push(practice_block);
+    timeline.push(pre_affective_rating_instructions);
+    timeline.push(ar_start);
+    timeline.push(pre_task_instructions);
+    timeline.push(block_1);
+    timeline.push(block_2);
+    timeline.push(block_3);
+    timeline.push(block_4);
+    timeline.push(pre_picture_rating_instructions);
+    timeline.push(picture_rating_procedure);
+    timeline.push(post_survey);
+    timeline.push(pre_affective_rating_instructions);
+    timeline.push(completed_instructions);   
 
     jsPsych.init({
       timeline: timeline,
-      preload_images: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png', 'img/Stim_set2_1.png', 'img/Stim_set2_2.png', 'img/Stim_set3_1.png', 'img/Stim_set3_2.png']
+      preload_images: [
+        'img/pilot_1_1.png',
+        'img/pilot_1_2.png',
+        'img/Stim_set1_1.png',
+        'img/Stim_set1_2.png',
+        'img/Stim_set2_1.png',
+        'img/Stim_set2_2.png',
+        'img/Stim_set3_1.png',
+        'img/Stim_set3_2.png'
+      ]
     })
   </script>
 </html>
