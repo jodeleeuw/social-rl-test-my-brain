@@ -6,6 +6,8 @@
     <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych/plugins/jspsych-call-function.js"></script>
+    <script type="text/javascript" src="TestMyBrain.12.18.min.js"></script>
     <link rel="stylesheet" href="jspsych/css/jspsych.css">
     <style>
       img.cue {
@@ -436,6 +438,18 @@
       }
     }
 
+    /* data push to server */
+
+    var save_data = {
+      type: 'call-function',
+      func: function(){
+        var results = jsPsych.data.get().values();
+        var score = 0;
+        var outcomes = {};
+        tmbSubmitToServer(results,score,outcomes);
+      }
+    }
+    
     /* build the the experiment timeline */
 
     timeline.push(start_instructions);
@@ -452,6 +466,7 @@
     timeline.push(post_survey);
     timeline.push(pre_affective_rating_instructions);
     timeline.push(ar_end);
+    timeline.push(save_data);
     timeline.push(completed_instructions);   
 
     jsPsych.init({
