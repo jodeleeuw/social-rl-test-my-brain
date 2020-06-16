@@ -267,74 +267,98 @@
       timeline: [fixation_trial, cue_trial, feedback_trial],
       timeline_variables: [
         {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
-        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
+        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
+        {rewarding_choice: 0, cues: ['img/Stim_set1_2.png', 'img/Stim_set1_1.png']},
+        {rewarding_choice: 1, cues: ['img/Stim_set1_2.png', 'img/Stim_set1_1.png']},
       ],
-      data: {block: 1},
       sample: {
         type: 'custom',
         fn: function(){
-          var total_trials = 20;
-          var p_reward_0 = 0.8;
-          var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
-          return sample;
+          return [
+            0,
+            0,
+            0,
+            2,
+            3,
+            0,
+            3,
+            3,
+            0,
+            1,
+            0,
+            0,
+            3,
+            0,
+            3,
+            1,
+            1,
+            0,
+            0,
+            0,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            3,
+            2,
+            2,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            0,
+            2,
+            3,
+            0,
+            1,
+            0,
+            0,
+            1,
+            2,
+            0,
+            2,
+            0,
+            3,
+            1,
+            0,
+            1,
+            0,
+            2,
+            2,
+            2,
+            3,
+            0,
+            3,
+            1,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            1,
+            0,
+            2,
+            0,
+            3,
+            3,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
         }
       }
     }
-
-    var block_2 = {
-      timeline: [fixation_trial, cue_trial, feedback_trial],
-      timeline_variables: [
-        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
-        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
-      ],
-      data: {block: 2},
-      sample: {
-        type: 'custom',
-        fn: function(){
-          var total_trials = 20;
-          var p_reward_0 = 0.1;
-          var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
-          return sample;
-        }
-      }
-    }
-
-    var block_3 = {
-      timeline: [fixation_trial, cue_trial, feedback_trial],
-      timeline_variables: [
-        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
-        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
-      ],
-      data: {block: 3},
-      sample: {
-        type: 'custom',
-        fn: function(){
-          var total_trials = 20;
-          var p_reward_0 = 0.5;
-          var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
-          return sample;
-        }
-      }
-    }
-
-    var block_4 = {
-      timeline: [fixation_trial, cue_trial, feedback_trial],
-      timeline_variables: [
-        {rewarding_choice: 0, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']},
-        {rewarding_choice: 1, cues: ['img/Stim_set1_1.png', 'img/Stim_set1_2.png']}
-      ],
-      data: {block: 4},
-      sample: {
-        type: 'custom',
-        fn: function(){
-          var total_trials = 20;
-          var p_reward_0 = 0.8;
-          var sample = jsPsych.randomization.shuffle(Array(total_trials).fill(0, 0, total_trials*p_reward_0).fill(1, total_trials*p_reward_0));
-          return sample;
-        }
-      }
-    }
-
 
     /* create the picture rating tasks */
 
@@ -458,9 +482,6 @@
     timeline.push(ar_start);
     timeline.push(pre_task_instructions);
     timeline.push(block_1);
-    timeline.push(block_2);
-    timeline.push(block_3);
-    timeline.push(block_4);
     timeline.push(pre_picture_rating_instructions);
     timeline.push(picture_rating_procedure);
     timeline.push(post_survey);
