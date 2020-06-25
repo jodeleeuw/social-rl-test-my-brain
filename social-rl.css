@@ -1,0 +1,37 @@
+img.cue {
+  cursor: pointer;
+  border: 0px solid #aaa;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 0px;
+  box-shadow: 0px 0px 5px 2px #ddd;
+  outline: none;
+}
+
+img.mini {
+  transform: scale(0.8)
+}
+
+#jspsych-html-button-response-btngroup {
+  width: 280px;
+  margin: auto;
+}
+
+img.feedback {
+  width: 190px;
+}
+
+img.gs {
+  filter: grayscale(100%);
+}
+
+div.instructions {
+  max-width: 800px;
+}
+
+@media only screen and (max-width: 600px) {
+  div.instructions {
+    font-size: 14px;
+    line-height: 1.5em;
+  }
+}
