@@ -159,7 +159,7 @@ var feedback_trial = {
   stimulus: function(){
     var reward = jsPsych.data.get().last(1).values()[0].rewarded
     if(reward == null){
-      return "<p>Please respond faster.</p>"
+      return "<p>No response detected. Please respond faster.</p>"
     }
     if(reward == true){
       return "<img src='img/thumbs_up.png' class='feedback'></img>";
@@ -331,12 +331,12 @@ var picture_confidence_task = {
     var stim = '<div>'+
     '<p>How certain are you?</p>'
     if(which_image == 1){
-      stim += '<img src="img/Stim_set1_1.png" class="cue mini"></img>'+
-        '<img src="img/Stim_set1_2.png" class="cue mini gs"></img>'
+      stim += '<img src="'+test_img_1+'" class="cue mini"></img>'+
+        '<img src="'+test_img_2+'" class="cue mini gs"></img>'
     }
     if(which_image == 0){
-      stim += '<img src="img/Stim_set1_2.png" class="cue mini"></img>'+
-        '<img src="img/Stim_set1_1.png" class="cue mini gs"></img>'
+      stim += '<img src="'+test_img_2+'" class="cue mini"></img>'+
+        '<img src="'+test_img_1+'" class="cue mini gs"></img>'
     }
     stim += '</div>'
     return stim;
