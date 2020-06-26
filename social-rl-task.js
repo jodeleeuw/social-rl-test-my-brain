@@ -122,7 +122,7 @@ var cue_trial = {
   choices: jsPsych.timelineVariable('cues'),
   stimulus: '',//'<p>Select a picture.</p>',
   button_html: '<img class="cue" src="%choice%"></img>',
-  post_trial_gap: 1000,
+  post_trial_gap: 0,
   margin_vertical: "20px",
   margin_horizontal: "0px",
   response_ends_trial: false,
