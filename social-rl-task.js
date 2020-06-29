@@ -445,6 +445,8 @@ jsPsych.init({
     practice_img_1,
     practice_img_2,
     test_img_1,
-    test_img_2
+    test_img_2,
+    'img/thumbs_down.png',
+    'img/thumbs_up.png'
   ]
 });
