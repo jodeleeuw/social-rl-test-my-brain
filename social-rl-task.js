@@ -2,6 +2,16 @@ var timeline = [];
 
 /* define instructions */
 
+var browser_warning = {
+  type: 'html-button-response',
+  stimulus: '<div class="instructions">'+
+    '<p>To complete this task you will need to use Chrome, Firefox, Edge, or Safari.</p>'+
+    '<p>Internet Explorer is not supported.</p>'+
+    '</div>',
+  choices: ['I am using a supported browser.'],
+  data: {task: 'instructions'}
+}
+
 var start_instructions = {
   timeline: [{
     type: 'html-button-response',
@@ -425,6 +435,7 @@ var save_data = {
 
 /* build the the experiment timeline */
 
+timeline.push(browser_warning);
 timeline.push(start_instructions);
 timeline.push(practice_block);
 timeline.push(pre_affective_rating_instructions);
