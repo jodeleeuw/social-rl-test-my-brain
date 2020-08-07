@@ -130,7 +130,7 @@ jsPsych.plugins["html-button-response"] = (function() {
       var end_time = performance.now();
       var rt = end_time - start_time;
       response.button = choice;
-      response.rt = rt;
+      response.rt = Math.round(rt);
 
       // after a valid response, the stimulus will have the CSS class 'responded'
       // which can be used to provide visual feedback that a response was recorded
