@@ -9,7 +9,11 @@ var browser_warning = {
     '<p>Internet Explorer is not supported.</p>'+
     '</div>',
   choices: ['I am using a supported browser.'],
-  data: {task: 'instructions'}
+  data: {task: 'instructions'},
+  on_finish: function(data){
+    // clear the stimulus to save space in the data object
+    data.stimulus = null;
+  }
 }
 
 var start_instructions = {
@@ -19,14 +23,22 @@ var start_instructions = {
       '<p>You will be presented with two pictures on the screen and you have to choose one of them by clicking on it.</p>'+
       '<p>One of the pictures will be followed by a reward (thumbs up) more often than the other one and this will change as the game goes on. You have to pick the picture that you think is giving you reward at that time and your objective is to get as many thumbs-up (rewards) and as little thumbs-down (punishments) as you can.</p><p>The pictures will be on the screen only for a short while and you have to make your responses within this time.</p>'+
       '</div>',
-    choices: ['Continue']
+    choices: ['Continue'],
+    on_finish: function(data){
+      // clear the stimulus to save space in the data object
+      data.stimulus = null;
+    }
   },
   {
     type: 'html-button-response',
     stimulus: '<div class="instructions">'+
       '<p>First, you will complete a practice round.</p><p>For the practice round, there will be no associations between the pictures and the reward or punishment. The goal of the practice is to get you acquainted the type of stimuli that you will be seeing and the general format of the game.</p>'+
       '</div>',
-    choices: ['Begin Practice']
+    choices: ['Begin Practice'],
+    on_finish: function(data){
+      // clear the stimulus to save space in the data object
+      data.stimulus = null;
+    }
   }],
   data: {task: 'instructions'}
 }
@@ -37,7 +49,11 @@ var pre_affective_rating_instructions = {
     '<p>Now we will ask you a set of questions about how you are feeling at the moment.</p>'+
     '</div>',
   choices: ['Start questions'],
-  data: {task: 'instructions'}
+  data: {task: 'instructions'},
+  on_finish: function(data){
+    // clear the stimulus to save space in the data object
+    data.stimulus = null;
+  }
 }
 
 var pre_task_instructions = {
@@ -47,7 +63,11 @@ var pre_task_instructions = {
     '<p>Remember, one of the pictures will be followed by a reward (thumbs up) more often than the other one and this will change as the game goes on. You have to pick the picture that you think is giving you reward at that time and your objective is to get as many thumbs-up (rewards) and as little thumbs-down (punishments) as you can.</p>'+
     '</div>',
   choices: ['Begin'],
-  data: {task: 'instructions'}
+  data: {task: 'instructions'},
+  on_finish: function(data){
+    // clear the stimulus to save space in the data object
+    data.stimulus = null;
+  }
 }
 
 var pre_picture_rating_instructions = {
@@ -56,7 +76,11 @@ var pre_picture_rating_instructions = {
     '<p>All done! Now we will ask a short set of questions about the task you just completed.</p>'+
     '</div>',
   choices: ['Continue'],
-  data: {task: 'instructions'}
+  data: {task: 'instructions'},
+  on_finish: function(data){
+    // clear the stimulus to save space in the data object
+    data.stimulus = null;
+  }
 }
 
 var completed_instructions = {
@@ -65,7 +89,11 @@ var completed_instructions = {
     '<p>Thanks for completing the game! Click the button below to go to the next game.</p>'+
     '</div>',
   choices: ['Next Game'],
-  data: {task: 'instructions'}
+  data: {task: 'instructions'},
+  on_finish: function(data){
+    // clear the stimulus to save space in the data object
+    data.stimulus = null;
+  }
 }
 
 /* create the affective rating scales */
